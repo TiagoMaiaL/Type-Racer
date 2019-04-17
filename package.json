@@ -1,0 +1,26 @@
+{
+  "name": "typeracer",
+  "version": "1.0.0",
+  "description": "Compete against others to see who is the fastest typer.",
+  "main": "source.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TiagoMaiaL/Type-Racer.git"
+  },
+  "author": "Tiago Maia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TiagoMaiaL/Type-Racer/issues"
+  },
+  "homepage": "https://github.com/TiagoMaiaL/Type-Racer#readme",
+  "dependencies": {
+    "jest": "^24.7.1",
+    "jquery": "^3.4.0"
+  }
+}
