@@ -2,6 +2,15 @@
 
 const { Player, TypeRacer } = require('../typeracer');
 
+describe('Player methods', () => {
+    test('returns the current typing index of the player', () => {
+        const player = new Player();
+        player.typedWords = ['typed ', 'words ', 'to ', 'test '];
+
+        expect(player.getTypingIndex()).toEqual(4);
+    });
+});
+
 describe('Player constructor', () => {
     test('initiates with no typed words', () => {
         expect((new Player()).typedWords).toEqual([]);

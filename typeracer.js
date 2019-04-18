@@ -11,6 +11,13 @@ function Player() {
 }
 
 /**
+ * Given a player with n typed words, returns the index of the current word the user is typing.
+ */
+Player.prototype.getTypingIndex = function() {
+    return this.typedWords.length;
+}
+
+/**
  * The TypeRacer game object type.
  * @param {String} text - the text to be typed by the players.
  */
