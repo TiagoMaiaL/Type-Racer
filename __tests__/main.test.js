@@ -14,14 +14,14 @@ describe('Player methods', () => {
         const player = new Player();
         player.typingText = 'asdffds';
 
-        expect(player.currentTextMatches('word ')).toEqual(false);
+        expect(player.textMatches('word ')).toEqual(false);
     });
 
     test('matches the current text with the passed word', () => {
         const player = new Player();
         player.typingText = 'word ';
 
-        expect(player.currentTextMatches('word ')).toEqual(true);
+        expect(player.textMatches('word ')).toEqual(true);
     });
 });
 
@@ -72,10 +72,35 @@ describe('TypeRacer Methods', () => {
         expect(typeRacer.currentPlayer.typingText).toEqual(expectedOutput);
     });
 
-    // test('match returns false if the passed text does not match the current word', () => {
-    //     const typeRacer = new TypeRacer('This is a test text.');
-    //     expect()
-    // });
+    test('match returns false if the passed text does not match the current word', () => {
+        const typeRacer = new TypeRacer('This is a test text.');
+        typeRacer.setTypingText('asdf');
+
+        expect(typeRacer.match()).toEqual(false);
+    });
+
+    test('match returns true if the passed text matches the current word', () => {
+        const typeRacer = new TypeRacer('This is a test text.');
+        typeRacer.setTypingText('This ');
+        
+        expect(typeRacer.match()).toEqual(true);
+    });
+
+    test('match clears the player typing text if it matches the current word', () => {
+        const typeRacer = new TypeRacer('This is a test text.');
+        typeRacer.setTypingText('This ');
+        typeRacer.match();
+        
+        expect(typeRacer.currentPlayer.typingText).toEqual('');
+    });
+
+    test('match adds the current text to the player\'s typed ones if there\'s a match', () => {
+        const typeRacer = new TypeRacer('This is a test text.');
+        typeRacer.setTypingText('This ');
+        typeRacer.match();
+        
+        expect(typeRacer.currentPlayer.typedWords.pop()).toEqual('This ');
+    });
 });
 
 describe('TypeRacer constructor', () => {

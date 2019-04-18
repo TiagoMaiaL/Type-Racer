@@ -27,7 +27,7 @@ Player.prototype.getTypingIndex = function() {
  * @param {String} word - the word to be compared.
  * @returns {Boolen} - true if the text is equals to the word, false otherwise.
  */
-Player.prototype.currentTextMatches = function(word) {
+Player.prototype.textMatches = function(word) {
     return this.typingText === word;
 }
 
@@ -101,11 +101,18 @@ TypeRacer.prototype.setTypingText = function(text) {
 
 /**
  * Given a text being typed, matches it against the current text word and updates the player text attributes.
- * @param {String} text - the text being typed by the player.
  * @param {Boolean} - the boolean indicating if the text matched the word.
  */
-TypeRacer.prototype.match = function(text) {
+TypeRacer.prototype.match = function() {
+    const word = this.words[this.currentPlayer.getTypingIndex()];
+    const matches = this.currentPlayer.textMatches(word)
 
+    if (matches) {
+        this.currentPlayer.typingText = '';
+        this.currentPlayer.typedWords.push(word);
+    }
+
+    return matches;
 }
 
 module.exports = { Player, TypeRacer };
