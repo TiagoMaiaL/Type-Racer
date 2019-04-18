@@ -25,6 +25,11 @@ function TypeRacer(text) {
     this.text = text;
 
     /**
+     * The words of the game's text.
+     */
+    this.words = this.getTextComponents(this.text);
+
+    /**
      * The current player client.
      */
     this.currentPlayer = new Player();
@@ -48,6 +53,17 @@ function TypeRacer(text) {
      * The time to end the game.
      */
     this.endTime = this.startTime + 60;
+}
+
+/**
+ * Given a text, returns an array of its words with the following space character of each one.
+ * @param {String} text - the text from which the components are gotten.
+ * @returns {Array} - the words of the text.
+ */
+TypeRacer.prototype.getTextComponents = function(text) {
+    return text.split(' ').map((word, i, array) => {
+        return word + ((i < array.length - 1) ? ' ' : '');
+    });
 }
 
 module.exports = { Player, TypeRacer };

@@ -8,6 +8,31 @@ describe('Player constructor', () => {
     });
 });
 
+describe('TypeRacer Methods', () => {
+    test('returns the array of words from the passed text', () => {
+        const text = 'A man who doesn\'t spend time with his family can never be a real man.';
+        const expectedOutput = [
+            'A ',
+            'man ',
+            'who ',
+            'doesn\'t ',
+            'spend ',
+            'time ',
+            'with ',
+            'his ',
+            'family ',
+            'can ',
+            'never ',
+            'be ',
+            'a ',
+            'real ',
+            'man.'
+        ];
+
+        expect(TypeRacer.prototype.getTextComponents(text)).toEqual(expectedOutput);
+    });
+});
+
 describe('TypeRacer constructor', () => {
     test('throws an error if the passed text is not a string', () => {
         expect(() => new TypeRacer()).toThrow(TypeError);
@@ -20,6 +45,22 @@ describe('TypeRacer constructor', () => {
     test('initiates with the passed text', () => {
         const textInput = 'Great men are not born great, they grow great...';
         expect(new TypeRacer(textInput).text).toEqual(textInput);
+    });
+
+    test('initiates with a property holding the words of the text', () => {
+        const typeRacer = new TypeRacer('Never hate your enemies. It affects your judgment.');
+        const expectedProperty = [
+            'Never ',
+            'hate ',
+            'your ',
+            'enemies. ',
+            'It ',
+            'affects ',
+            'your ',
+            'judgment.'
+        ];
+
+        expect(typeRacer.words).toEqual(expectedProperty);
     });
 
     test('initiates with a current player', () => {
