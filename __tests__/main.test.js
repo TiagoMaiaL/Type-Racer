@@ -15,6 +15,10 @@ describe('Player constructor', () => {
     test('initiates with no typed words', () => {
         expect((new Player()).typedWords).toEqual([]);
     });
+
+    test('initiate with no typing text', () => {
+        expect((new Player()).typingText).toEqual('');
+    });
 });
 
 describe('TypeRacer Methods', () => {

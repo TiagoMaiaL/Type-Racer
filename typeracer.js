@@ -8,6 +8,11 @@ function Player() {
      * The words typed by the player so far.
      */
     this.typedWords = [];
+
+    /**
+     * The text currently being typed by the player.
+     */
+    this.typingText = '';
 }
 
 /**
