@@ -58,6 +58,24 @@ describe('TypeRacer Methods', () => {
 
         expect(TypeRacer.prototype.getTextComponents(text)).toEqual(expectedOutput);
     });
+
+    test('throws an error if the text being setted to the player isn\'t a string', () => {
+        const typeRacer = new TypeRacer('Some text');
+        expect(() => typeRacer.setTypingText(null)).toThrow(TypeError);
+    });
+
+    test('sets the current player\'s text', () => {
+        const expectedOutput = 'Test';
+        const typeRacer = new TypeRacer('This is a test text.');
+        typeRacer.setTypingText(expectedOutput);
+
+        expect(typeRacer.currentPlayer.typingText).toEqual(expectedOutput);
+    });
+
+    // test('match returns false if the passed text does not match the current word', () => {
+    //     const typeRacer = new TypeRacer('This is a test text.');
+    //     expect()
+    // });
 });
 
 describe('TypeRacer constructor', () => {

@@ -87,4 +87,25 @@ TypeRacer.prototype.getTextComponents = function(text) {
     });
 }
 
+/**
+ * Given a text being typed, sets the typing text of the current player with it.
+ * @param {String} text - the text being typed by the player.
+ */
+TypeRacer.prototype.setTypingText = function(text) {
+    if (typeof text !== 'string') {
+        throw new TypeError('The provided string must be a valid one.');
+    }
+
+    this.currentPlayer.typingText = text;
+}
+
+/**
+ * Given a text being typed, matches it against the current text word and updates the player text attributes.
+ * @param {String} text - the text being typed by the player.
+ * @param {Boolean} - the boolean indicating if the text matched the word.
+ */
+TypeRacer.prototype.match = function(text) {
+
+}
+
 module.exports = { Player, TypeRacer };
