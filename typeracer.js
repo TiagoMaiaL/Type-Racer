@@ -23,6 +23,15 @@ Player.prototype.getTypingIndex = function() {
 }
 
 /**
+ * Given a word, returns true if the current text typed by the word is equals to it.
+ * @param {String} word - the word to be compared.
+ * @returns {Boolen} - true if the text is equals to the word, false otherwise.
+ */
+Player.prototype.currentTextMatches = function(word) {
+    return this.typingText === word;
+}
+
+/**
  * The TypeRacer game object type.
  * @param {String} text - the text to be typed by the players.
  */

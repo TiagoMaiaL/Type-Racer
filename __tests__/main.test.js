@@ -9,6 +9,20 @@ describe('Player methods', () => {
 
         expect(player.getTypingIndex()).toEqual(4);
     });
+
+    test('does not match the current text with the passed word', () => {
+        const player = new Player();
+        player.typingText = 'asdffds';
+
+        expect(player.currentTextMatches('word ')).toEqual(false);
+    });
+
+    test('matches the current text with the passed word', () => {
+        const player = new Player();
+        player.typingText = 'word ';
+
+        expect(player.currentTextMatches('word ')).toEqual(true);
+    });
 });
 
 describe('Player constructor', () => {
