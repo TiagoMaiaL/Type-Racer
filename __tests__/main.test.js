@@ -178,4 +178,16 @@ describe('TypingDisplayer', () => {
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
     });
+
+    test('displays the typed words and the words still to be typed', () => {
+        const typeRacer = new TypeRacer('This is a testing text.');
+        typeRacer.currentPlayer.typedWords = [
+            'This ',
+            'is '
+        ];
+        const displayer = new TypingDisplayer(typeRacer);
+        const expectedOutput = '<span class="typed-words">This is </span>a testing text.'
+
+        expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
 });
