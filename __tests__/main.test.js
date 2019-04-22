@@ -1,6 +1,6 @@
 'use strict';
 
-const { Player, TypeRacer } = require('../typeracer');
+const { Player, TypeRacer, TypingDisplayer } = require('../typeracer');
 
 describe('Player methods', () => {
     test('returns the current typing index of the player', () => {
@@ -155,5 +155,12 @@ describe('TypeRacer constructor', () => {
         const expectedEndDate = typeRacer.startTime + 60;
 
         expect((new TypeRacer('test')).endTime).toEqual(expectedEndDate);
+    });
+});
+
+describe('TypingDisplayer', () => {
+    test('initiates with the passed typeRacer game', () => {
+        const typeRacer = new TypeRacer('Example text');
+        expect((new TypingDisplayer(typeRacer)).typeRacer).toBe(typeRacer);
     });
 });

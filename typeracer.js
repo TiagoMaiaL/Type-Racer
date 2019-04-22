@@ -115,4 +115,23 @@ TypeRacer.prototype.match = function() {
     return matches;
 }
 
-module.exports = { Player, TypeRacer };
+/**
+ * The object in charge of generating the formatted html to display the game.
+ */
+function TypingDisplayer(typeRacer) {
+    /**
+     * The TypeRacer game containing the data to be displayed.
+     */
+    this.typeRacer = typeRacer;
+}
+
+/**
+ * Generates the html text to display the current state of the TypeRacer game based on the words typed by the user, 
+ * the current chars being typed, and the text still to be typed.
+ * @returns {String} the html text.
+ */
+TypingDisplayer.prototype.getHtmlText = function() {
+
+}
+
+module.exports = { Player, TypeRacer, TypingDisplayer };

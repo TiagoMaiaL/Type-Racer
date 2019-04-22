@@ -1,7 +1,7 @@
 'use strict';
 
 $('document').ready(_ => {
-    // Get a reference to the interactive html elements.
+    // Get a reference to the interactive HTML elements.
     const textElement = $('.text-to-type');
     const typeArea = $('.type-area');
 
@@ -19,5 +19,6 @@ $('document').ready(_ => {
         }
 
         // TODO: Display the matches and typed text.
+        
     });
 });
