@@ -131,7 +131,7 @@ function TypingDisplayer(typeRacer) {
  * @returns {String} the html text.
  */
 TypingDisplayer.prototype.getHtmlText = function() {
-
+    return `<span class="typed-words">${ this.typeRacer.currentPlayer.typedWords.join('') }</span>`;
 }
 
 module.exports = { Player, TypeRacer, TypingDisplayer };

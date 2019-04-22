@@ -163,4 +163,19 @@ describe('TypingDisplayer', () => {
         const typeRacer = new TypeRacer('Example text');
         expect((new TypingDisplayer(typeRacer)).typeRacer).toBe(typeRacer);
     });
+
+    test('displays the typed words in a specific span', () => {
+        const typeRacer = new TypeRacer('This is a testing text.');
+        typeRacer.currentPlayer.typedWords = [
+            'This ',
+            'is ',
+            'a ',
+            'testing ',
+            'text.'
+        ];
+        const displayer = new TypingDisplayer(typeRacer);
+        const expectedOutput = '<span class="typed-words">This is a testing text.</span>'
+
+        expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
 });
