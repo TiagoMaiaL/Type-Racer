@@ -190,4 +190,13 @@ describe('TypingDisplayer', () => {
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
     });
+
+    test('displays the text that\'s being typed, and that matches the word so far', () => {
+        const typeRacer = new TypeRacer('This is a testing text.');
+        typeRacer.setTypingText('Thi');
+        const displayer = new TypingDisplayer(typeRacer);
+        const expectedOutput = '<span class="typing-text matched">Thi</span>s is a testing text.'
+
+        expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
 });

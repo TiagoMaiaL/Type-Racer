@@ -131,7 +131,15 @@ function TypingDisplayer(typeRacer) {
  * @returns {String} the html text.
  */
 TypingDisplayer.prototype.getHtmlText = function() {
-    return `<span class="typed-words">${ this.typeRacer.currentPlayer.typedWords.join('') }</span>${ this.typeRacer.words.slice(this.typeRacer.currentPlayer.getTypingIndex()).join('') }`;
+    let typedHtmlText = '';
+    if (this.typeRacer.currentPlayer.typedWords.length > 0) {
+        typedHtmlText = `<span class="typed-words">${ this.typeRacer.currentPlayer.typedWords.join('') }</span>`;
+    }
+    let toTypeHtmlText = this.typeRacer.words.slice(this.typeRacer.currentPlayer.getTypingIndex()).join('');
+    
+    // TODO: Include the typed text and the span with the text that doesn't match.
+
+    return `${ typedHtmlText }${ toTypeHtmlText }`;
 }
 
 module.exports = { Player, TypeRacer, TypingDisplayer };
