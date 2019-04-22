@@ -101,6 +101,24 @@ describe('TypeRacer Methods', () => {
         
         expect(typeRacer.currentPlayer.typedWords.pop()).toEqual('This ');
     });
+
+    test('getMatchedTypingChars returns null if the player hasn\'t typed anything', () => {        
+        expect((new TypeRacer('testing text.')).getMatchedTypingChars()).toBe(null);
+    });
+
+    test('getMatchedTypingChars returns the typed chars that match with the current word to be typed', () => {
+        const typeRacer = new TypeRacer('testing text.');
+        typeRacer.setTypingText('tes');
+
+        expect(typeRacer.getMatchedTypingChars()).toEqual(['tes', '']);
+    });
+
+    test('getMatchedTypingChars returns the typed chars that don\'t match with the current word to be typed', () => {
+        const typeRacer = new TypeRacer('testing text.');
+        typeRacer.setTypingText('asdf');
+
+        expect(typeRacer.getMatchedTypingChars()).toEqual(['', 'asdf']);
+    });
 });
 
 describe('TypeRacer constructor', () => {

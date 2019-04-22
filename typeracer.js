@@ -100,6 +100,38 @@ TypeRacer.prototype.setTypingText = function(text) {
 }
 
 /**
+ * Having a text being typed, returns the portion of it that matches the current word, and the portion of it that doesn't.
+ * @returns {Array|Null} typingTexts - null if there's no typing text, or the array containing the portions of the text, 
+ *                                     with the index 0 containing the matched text, and 1 the non-matched one.
+ */
+TypeRacer.prototype.getMatchedTypingChars = function() {
+    const typingText = this.currentPlayer.typingText;
+    const currentWord = this.words[this.currentPlayer.getTypingIndex()];
+
+    if (typingText.length === 0) {
+        return null;
+    }
+
+    let matchedChars = '';
+    let unmatchedChars = '';
+    
+    for (let i = 0; i < typingText.length; i++) {
+        const typedChar = typingText[i];
+        const wordChar = currentWord[i];
+
+        if (typedChar === wordChar) {
+            matchedChars += typedChar;
+        } else {
+            unmatchedChars = typingText.slice(i);
+            break;
+        }
+    }
+
+    return [matchedChars, unmatchedChars];
+}
+
+
+/**
  * Given a text being typed, matches it against the current text word and updates the player text attributes.
  * @param {Boolean} - the boolean indicating if the text matched the word.
  */
