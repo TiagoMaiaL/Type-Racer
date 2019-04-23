@@ -102,8 +102,8 @@ describe('TypeRacer Methods', () => {
         expect(typeRacer.currentPlayer.typedWords.pop()).toEqual('This ');
     });
 
-    test('getMatchedTypingChars returns null if the player hasn\'t typed anything', () => {        
-        expect((new TypeRacer('testing text.')).getMatchedTypingChars()).toBe(null);
+    test('getMatchedTypingChars returns empty texts if the player hasn\'t typed anything', () => {        
+        expect((new TypeRacer('testing text.')).getMatchedTypingChars()).toEqual(['', '']);
     });
 
     test('getMatchedTypingChars returns the typed chars that match with the current word to be typed', () => {

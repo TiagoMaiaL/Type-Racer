@@ -108,10 +108,6 @@ TypeRacer.prototype.getMatchedTypingChars = function() {
     const typingText = this.currentPlayer.typingText;
     const currentWord = this.words[this.currentPlayer.getTypingIndex()];
 
-    if (typingText.length === 0) {
-        return null;
-    }
-
     let matchedChars = '';
     let unmatchedChars = '';
     
@@ -167,9 +163,14 @@ TypingDisplayer.prototype.getHtmlText = function() {
     if (this.typeRacer.currentPlayer.typedWords.length > 0) {
         typedHtmlText = `<span class="typed-words">${ this.typeRacer.currentPlayer.typedWords.join('') }</span>`;
     }
-    let toTypeHtmlText = this.typeRacer.words.slice(this.typeRacer.currentPlayer.getTypingIndex()).join('');
+
+    const typingIndex = this.typeRacer.currentPlayer.getTypingIndex();
+    const [matchedChars, unmatchedChars] = this.typeRacer.getMatchedTypingChars();
+    let toTypeHtmlText = this.typeRacer.words.slice(typingIndex).join('');
     
-    // TODO: Include the typed text and the span with the text that doesn't match.
+    if (matchedChars.length > 0) {
+        toTypeHtmlText = `<span class="typing-text matched">${ toTypeHtmlText.slice(0, matchedChars.length) }</span>${ toTypeHtmlText.slice(matchedChars.length) }`;
+    }
 
     return `${ typedHtmlText }${ toTypeHtmlText }`;
 }
