@@ -217,4 +217,13 @@ describe('TypingDisplayer', () => {
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
     });
+
+    test('displays the length of the mistyped chars with a span in the text', () => {
+        const typeRacer = new TypeRacer('This is a testing text.');
+        typeRacer.setTypingText('asdf');
+        const displayer = new TypingDisplayer(typeRacer);
+        const expectedOutput = '<span class="typing-text non-matched">This</span> is a testing text.'
+
+        expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
 });

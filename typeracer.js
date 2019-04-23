@@ -172,6 +172,10 @@ TypingDisplayer.prototype.getHtmlText = function() {
         toTypeHtmlText = `<span class="typing-text matched">${ toTypeHtmlText.slice(0, matchedChars.length) }</span>${ toTypeHtmlText.slice(matchedChars.length) }`;
     }
 
+    if (unmatchedChars.length > 0) {
+        toTypeHtmlText = `<span class="typing-text non-matched">${ toTypeHtmlText.slice(matchedChars.length, unmatchedChars.length) }</span>${ toTypeHtmlText.slice(unmatchedChars.length) }`;
+    }
+
     return `${ typedHtmlText }${ toTypeHtmlText }`;
 }
 
