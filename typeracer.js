@@ -168,15 +168,17 @@ TypingDisplayer.prototype.getHtmlText = function() {
     const [matchedChars, unmatchedChars] = this.typeRacer.getMatchedTypingChars();
     let toTypeHtmlText = this.typeRacer.words.slice(typingIndex).join('');
     
+    let matchedCharsText = '';
     if (matchedChars.length > 0) {
-        toTypeHtmlText = `<span class="typing-text matched">${ toTypeHtmlText.slice(0, matchedChars.length) }</span>${ toTypeHtmlText.slice(matchedChars.length) }`;
+        matchedCharsText = `<span class="typing-text matched">${ matchedChars }</span>`;
     }
 
+    let unmatchedCharsText = '';
     if (unmatchedChars.length > 0) {
-        toTypeHtmlText = `<span class="typing-text non-matched">${ toTypeHtmlText.slice(matchedChars.length, unmatchedChars.length) }</span>${ toTypeHtmlText.slice(unmatchedChars.length) }`;
+        unmatchedCharsText = `<span class="typing-text non-matched">${ toTypeHtmlText.slice(matchedChars.length, (matchedChars.length + unmatchedChars.length)) }</span>`;
     }
 
-    return `${ typedHtmlText }${ toTypeHtmlText }`;
+    return `${ typedHtmlText }${ matchedCharsText }${ unmatchedCharsText }${ toTypeHtmlText.slice(matchedChars.length + unmatchedChars.length) }`;
 }
 
 module.exports = { Player, TypeRacer, TypingDisplayer };

@@ -204,7 +204,7 @@ describe('TypingDisplayer', () => {
             'is '
         ];
         const displayer = new TypingDisplayer(typeRacer);
-        const expectedOutput = '<span class="typed-words">This is </span>a testing text.'
+        const expectedOutput = '<span class="typed-words">This is </span>a testing text.';
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
     });
@@ -213,7 +213,7 @@ describe('TypingDisplayer', () => {
         const typeRacer = new TypeRacer('This is a testing text.');
         typeRacer.setTypingText('Thi');
         const displayer = new TypingDisplayer(typeRacer);
-        const expectedOutput = '<span class="typing-text matched">Thi</span>s is a testing text.'
+        const expectedOutput = '<span class="typing-text matched">Thi</span>s is a testing text.';
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
     });
@@ -222,7 +222,29 @@ describe('TypingDisplayer', () => {
         const typeRacer = new TypeRacer('This is a testing text.');
         typeRacer.setTypingText('asdf');
         const displayer = new TypingDisplayer(typeRacer);
-        const expectedOutput = '<span class="typing-text non-matched">This</span> is a testing text.'
+        const expectedOutput = '<span class="typing-text non-matched">This</span> is a testing text.';
+
+        expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
+
+    test('display the chars that match the current word, and the ones that doesn\'t', () => {
+        const typeRacer = new TypeRacer('This is a testing text.');
+        typeRacer.setTypingText('Th----------');
+        const displayer = new TypingDisplayer(typeRacer);
+        const expectedOutput = '<span class="typing-text matched">Th</span><span class="typing-text non-matched">is is a te</span>sting text.';
+
+        expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
+
+    test('display the typed chars, the chars that match the current word, and the ones that doesn\'t', () => {
+        const typeRacer = new TypeRacer('This is a testing text.');
+        typeRacer.currentPlayer.typedWords = [
+            'This ',
+            'is '
+        ];
+        typeRacer.setTypingText('a------');
+        const displayer = new TypingDisplayer(typeRacer);
+        const expectedOutput = '<span class="typed-words">This is </span><span class="typing-text matched">a</span><span class="typing-text non-matched"> testi</span>ng text.';
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
     });
