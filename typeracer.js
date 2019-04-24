@@ -74,6 +74,11 @@ function TypeRacer(text) {
      * The time to end the game.
      */
     this.endTime = this.startTime + 60;
+
+    /**
+     * Flag indicating if the game is started or not.
+     */
+    this.isRunning = false;
 }
 
 /**
@@ -178,13 +183,12 @@ TypingDisplayer.prototype.getTypedWordsHtmlText = function() {
 TypingDisplayer.prototype.getTypingCharsHtmlText = function() {
     const [matchedChars, unmatchedChars] = this.typeRacer.getMatchedTypingChars();
 
-    let toTypeHtmlText = this.typeRacer.getRemainingText();
-
     let matchedCharsText = '';
     if (matchedChars.length > 0) {
         matchedCharsText = `<span class="typing-text matched">${ matchedChars }</span>`;
     }
 
+    let toTypeHtmlText = this.typeRacer.getRemainingText();
     let unmatchedCharsText = toTypeHtmlText.slice(matchedChars.length, (matchedChars.length + unmatchedChars.length)) || '';
     if (unmatchedChars.length > 0) {
         unmatchedCharsText = `<span class="typing-text non-matched">${ unmatchedCharsText }</span>`;
