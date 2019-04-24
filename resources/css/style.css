@@ -30,7 +30,7 @@ p {
 }
 
 .typed-words {
-    color: gainsboro;
+    color: #B6B6B6;
 }
 
 .typing-text {
@@ -38,9 +38,9 @@ p {
 }
 
 .matched {
-    color: forestgreen;
+    background-color: #9BFFAF;
 }
 
 .non-matched {
-    color: red;
+    background-color: #FC717D;
 }
