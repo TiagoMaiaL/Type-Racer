@@ -248,4 +248,28 @@ describe('TypingDisplayer', () => {
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
     });
+
+    test('display the unmatched chars as far as the length of the remaining text', () => {
+        const typeRacer = new TypeRacer('testing.');
+        typeRacer.setTypingText('-'.repeat(100));
+
+        const displayer = new TypingDisplayer(typeRacer);
+        const expectedOutput = '<span class="typing-text non-matched">testing.</span>';
+
+        expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    })
+
+    test('display the typed words and the unmatched chars until the last char of the text', () => {
+        const typeRacer = new TypeRacer('This is a testing text.');
+        typeRacer.currentPlayer.typedWords = [
+            'This ',
+            'is '
+        ];
+        typeRacer.setTypingText('-'.repeat(100));
+
+        const displayer = new TypingDisplayer(typeRacer);
+        const expectedOutput = '<span class="typed-words">This is </span><span class="typing-text non-matched">a testing text.</span>';
+
+        expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
 });
