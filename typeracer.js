@@ -63,7 +63,7 @@ function TypeRacer(text) {
     /**
      * The initial date time of the game.
      */
-    this.startTime = Date.now();
+    this.startTime = null;
 
     /**
      * The seconds past its initial time.
@@ -73,12 +73,24 @@ function TypeRacer(text) {
     /**
      * The time to end the game.
      */
-    this.endTime = this.startTime + 60;
+    this.endTime = null;
 
     /**
      * Flag indicating if the game is started or not.
      */
     this.isRunning = false;
+}
+
+/**
+ * Starts the game and starts counting down the race time.
+ */
+TypeRacer.prototype.start = function() {
+    this.isRunning = true;
+
+    this.startTime = Date.now();
+    this.endTime = this.startTime + 60;
+
+    // TODO: Init a loop to tell the game has finished.
 }
 
 /**
