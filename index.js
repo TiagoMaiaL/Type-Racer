@@ -1,11 +1,21 @@
 'use strict';
 
 $('document').ready(_ => {
-    const currentQuote = $('.text-to-type').text();
-    console.log(currentQuote);
+    // Get a reference to the interactive HTML elements.
+    const textElement = $('.text-to-type');
+    const typeArea = $('.type-area');
 
-    $('.type-area').keydown(e => {
-        const userText = currentQuote;
-        console.log(userText);
+    // Instantiate a new typeracer game.
+    const typeRacer = new TypeRacer(textElement.text());
+    const displayer = new TypingDisplayer(typeRacer);
+
+    typeArea.keyup(_ => {
+        typeRacer.setTypingText(typeArea.val());
+
+        if (typeRacer.match()) {
+            typeArea.val('');
+        }
+
+        textElement.html(displayer.getHtmlText());
     });
 });

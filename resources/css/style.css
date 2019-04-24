@@ -1,0 +1,16 @@
+
+.typed-words {
+    color: gainsboro;
+}
+
+.typing-text {
+    text-decoration: underline;
+}
+
+.matched {
+    color: forestgreen;
+}
+
+.non-matched {
+    color: red;
+}
