@@ -1,4 +1,34 @@
 
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400');
+
+html {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+}
+
+.content {
+    width: 750px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 50px;
+    font-weight: 300;
+    margin: 40px auto;
+}
+
+p {
+    margin-bottom: 30px;
+    line-height: 1.3em;
+    letter-spacing: 0.05em;
+}
+
+.type-area {
+    width: 100%;
+    font-size: 18px;
+    height: 25px;
+}
+
 .typed-words {
     color: gainsboro;
 }
