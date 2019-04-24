@@ -195,9 +195,12 @@ describe('TypeRacer constructor', () => {
     });
 
     test('initiates with the game not yet started', () => {
-        const typeRacer = new TypeRacer('test');
-        expect(typeRacer.isRunning).toBe(false);
+        expect((new TypeRacer('test')).isRunning).toBe(false);
     });
+
+    test('initiates with the game not over', () => {
+        expect((new TypeRacer('test')).isOver).toBe(false);
+    })
 });
 
 describe('TypingDisplayer', () => {

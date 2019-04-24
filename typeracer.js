@@ -79,6 +79,11 @@ function TypeRacer(text) {
      * Flag indicating if the game is started or not.
      */
     this.isRunning = false;
+
+    /**
+     * Flag indicating if hte is over.
+     */
+    this.isOver = false;
 }
 
 /**
