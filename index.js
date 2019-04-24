@@ -9,7 +9,7 @@ $('document').ready(_ => {
     const typeRacer = new TypeRacer(textElement.text());
     const displayer = new TypingDisplayer(typeRacer);
 
-    typeArea.keypress(_ => {
+    typeArea.keyup(_ => {
         typeRacer.setTypingText(typeArea.val());
 
         if (typeRacer.match()) {
