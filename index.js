@@ -7,18 +7,15 @@ $('document').ready(_ => {
 
     // Instantiate a new typeracer game.
     const typeRacer = new TypeRacer(textElement.text());
-    console.log(typeRacer);
+    const displayer = new TypingDisplayer(typeRacer);
 
     typeArea.keypress(_ => {
-        console.log('firing');
-
         typeRacer.setTypingText(typeArea.val());
 
         if (typeRacer.match()) {
             typeArea.val('');
         }
 
-        // TODO: Display the matches and typed text.
-        
+        textElement.html(displayer.getHtmlText());
     });
 });
