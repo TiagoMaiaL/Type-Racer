@@ -1,6 +1,6 @@
 'use strict';
 
-const { Player, TypeRacer, TypingDisplayer } = require('../typeracer');
+const { Player, TypeRacer, SecondsChecker, TypingDisplayer } = require('../typeracer');
 
 describe('Player methods', () => {
     test('returns the current typing index of the player', () => {
@@ -298,5 +298,51 @@ describe('TypingDisplayer', () => {
         const expectedOutput = '<span class="typed-words">This is </span><span class="typing-text non-matched">a testing text.</span>';
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
+});
+
+describe('SecondsChecker', () => {
+    test('it accepts the start time property in its constructor', () => {
+        const startTime = Date.now();
+        const checker = new SecondsChecker(startTime, Date.now());
+
+        expect(checker.startTime).toBe(startTime);
+    });
+
+    test('it accepts the end time property in its constructor', () => {
+        const endTime = Date.now() + 60;
+        const checker = new SecondsChecker(Date.now(), endTime);
+
+        expect(checker.endTime).toBe(endTime);
+    });
+
+    test('it rejects an invalid start time', () => {
+        expect(() => new SecondsChecker(null, Date.now())).toThrow(TypeError);
+    });
+
+    test('it rejects an invalid end time', () => {
+        expect(() => new SecondsChecker(Date.now(), null)).toThrow(TypeError);
+    });
+
+    test('it returns false if the seconds didn\'t pass endTime', () => {
+        const checker = new SecondsChecker(Date.now(), Date.now() + 60);
+        expect(checker.passesEndTime(35)).toBe(false);
+    });
+
+    test('it returns true if the seconds pass endTime', () => {
+        const checker = new SecondsChecker(Date.now(), Date.now() + 60);
+        expect(checker.passesEndTime(61)).toBe(true);
+    });
+
+    test('it refuses to check for invalid seconds', () => {
+        const checker = new SecondsChecker(Date.now(), Date.now() + 60);
+        expect(() => checker.passesEndTime()).toThrow(TypeError);
+        expect(() => checker.passesEndTime(null)).toThrow(TypeError);
+    });
+
+    test('it refuses to check invalid numbers', () => {
+        const checker = new SecondsChecker(Date.now(), Date.now() + 20);
+        expect(() => checker.passesEndTime(-12)).toThrow(RangeError);
+        expect(() => checker.passesEndTime(0)).toThrow(RangeError);
     });
 });
