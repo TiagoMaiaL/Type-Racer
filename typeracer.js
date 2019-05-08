@@ -61,19 +61,27 @@ function TypeRacer(text) {
     this.players = [this.currentPlayer];
 
     /**
-     * The initial date time of the game.
+     * Flag indicating if the game is started or not.
      */
-    this.startTime = Date.now();
+    this.isRunning = false;
 
     /**
-     * The seconds past its initial time.
+     * Flag indicating if hte is over.
      */
-    this.currentSeconds = 0;
+    this.isOver = false;
 
     /**
-     * The time to end the game.
+     * The object in charge of checking if the race time is over.
      */
-    this.endTime = this.startTime + 60;
+    this.secondsChecker = null;
+}
+
+/**
+ * Starts the game and starts counting down the race time.
+ */
+TypeRacer.prototype.start = function() {
+    this.isRunning = true;
+    this.secondsChecker = new SecondsChecker(Date.now(), Date.now() + 60);
 }
 
 /**
@@ -151,6 +159,58 @@ TypeRacer.prototype.match = function() {
 }
 
 /**
+ * Given an amount of seconds, set this amount as the time since the game started, 
+ * ending the game if seconds pass the limit.
+ * @param {Number} seconds - the amount of seconds since the game began.
+ */
+TypeRacer.prototype.setTime = function(seconds) {
+    this.isOver = this.secondsChecker.passesEndTime(seconds);
+    this.isRunning = !this.isOver;
+}
+
+/**
+ * An object that checks if the provided seconds passed the time limit.
+ * @param {Number} startTime - the time interval of the start date.
+ * @param {Number} endTime - the time interval of the end date.
+ */
+function SecondsChecker(startTime, endTime) {
+
+    for (let i = 0; i < arguments.length; i++) {
+        const argument = arguments[i];
+
+        if (typeof argument !== 'number' || isNaN(argument)) {
+            throw new TypeError('The passed date must be a valid time interval');
+        }
+    }
+    
+    /**
+     * The initial time used to check seconds.
+     */
+    this.startTime = startTime;
+
+    /**
+     * The end time used to check if the seconds passed it.
+     */
+    this.endTime = endTime;
+}
+
+/**
+ * Given a number of seconds
+ * @param {Number} seconds - the amount of seconds.
+ */
+SecondsChecker.prototype.passesEndTime = function(seconds) {
+    if (typeof seconds != 'number' || isNaN(seconds)) {
+        throw new TypeError('The seconds must be of the number type.');
+    }
+
+    if (seconds <= 0) {
+        throw new RangeError('The seconds must be positive and greater than 0');
+    }
+
+    return this.endTime - this.startTime < seconds;
+}
+
+/**
  * The object in charge of generating the formatted html to display the game.
  */
 function TypingDisplayer(typeRacer) {
@@ -178,13 +238,12 @@ TypingDisplayer.prototype.getTypedWordsHtmlText = function() {
 TypingDisplayer.prototype.getTypingCharsHtmlText = function() {
     const [matchedChars, unmatchedChars] = this.typeRacer.getMatchedTypingChars();
 
-    let toTypeHtmlText = this.typeRacer.getRemainingText();
-
     let matchedCharsText = '';
     if (matchedChars.length > 0) {
         matchedCharsText = `<span class="typing-text matched">${ matchedChars }</span>`;
     }
 
+    let toTypeHtmlText = this.typeRacer.getRemainingText();
     let unmatchedCharsText = toTypeHtmlText.slice(matchedChars.length, (matchedChars.length + unmatchedChars.length)) || '';
     if (unmatchedChars.length > 0) {
         unmatchedCharsText = `<span class="typing-text non-matched">${ unmatchedCharsText }</span>`;
@@ -222,4 +281,4 @@ TypingDisplayer.prototype.getHtmlText = function() {
     return `${ typedWordsText }${ typingCharsText }${ toTypeText }`;
 }
 
-module.exports = { Player, TypeRacer, TypingDisplayer };
+module.exports = { Player, TypeRacer, SecondsChecker, TypingDisplayer };
