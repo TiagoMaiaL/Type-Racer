@@ -61,21 +61,6 @@ function TypeRacer(text) {
     this.players = [this.currentPlayer];
 
     /**
-     * The initial date time of the game.
-     */
-    this.startTime = null;
-
-    /**
-     * The seconds past its initial time.
-     */
-    this.currentSeconds = 0;
-
-    /**
-     * The time to end the game.
-     */
-    this.endTime = null;
-
-    /**
      * Flag indicating if the game is started or not.
      */
     this.isRunning = false;
@@ -84,6 +69,11 @@ function TypeRacer(text) {
      * Flag indicating if hte is over.
      */
     this.isOver = false;
+
+    /**
+     * The object in charge of checking if the race time is over.
+     */
+    this.secondsChecker = null;
 }
 
 /**
@@ -91,11 +81,7 @@ function TypeRacer(text) {
  */
 TypeRacer.prototype.start = function() {
     this.isRunning = true;
-
-    this.startTime = Date.now();
-    this.endTime = this.startTime + 60;
-
-    // TODO: Init a loop to tell the game has finished.
+    this.secondsChecker = new SecondsChecker(Date.now(), Date.now() + 60);
 }
 
 /**
@@ -170,6 +156,16 @@ TypeRacer.prototype.match = function() {
     }
 
     return matches;
+}
+
+/**
+ * Given an amount of seconds, set this amount as the time since the game started, 
+ * ending the game if seconds pass the limit.
+ * @param {Number} seconds - the amount of seconds since the game began.
+ */
+TypeRacer.prototype.setTime = function(seconds) {
+    this.isOver = this.secondsChecker.passesEndTime(seconds);
+    this.isRunning = !this.isOver;
 }
 
 /**

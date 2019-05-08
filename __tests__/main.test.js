@@ -127,19 +127,29 @@ describe('TypeRacer Methods', () => {
         expect(typeRacer.isRunning).toBe(true);
     });
 
-    test('when the game is started, it initiates the time date variables', () => {
+    test('starting the game should initialize its secondsChecker', () => {
         const typeRacer = new TypeRacer('test');
         typeRacer.start();
 
-        expect(typeRacer.startTime).toBeDefined();
-        expect(typeRacer.endTime).toBeDefined();
+        expect(typeRacer.secondsChecker).toBeInstanceOf(SecondsChecker);
     });
 
-    test('when the game is started, the endtime date is equals to the start time + 1 min', () => {
+    test('setting the game seconds within the limit', () => {
         const typeRacer = new TypeRacer('test');
         typeRacer.start();
+        typeRacer.setTime(12);
 
-        expect(typeRacer.endTime).toBe(typeRacer.startTime + 60);
+        expect(typeRacer.isRunning).toBe(true);
+        expect(typeRacer.isOver).toBe(false);
+    });
+
+    test('setting the game seconds off the race limit should end the game', () => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.start();
+        typeRacer.setTime(82); // More than the race time.
+
+        expect(typeRacer.isRunning).toBe(false);
+        expect(typeRacer.isOver).toBe(true);
     });
 });
 
@@ -182,24 +192,16 @@ describe('TypeRacer constructor', () => {
         expect(typeRacer.players).toEqual([typeRacer.currentPlayer]);
     });
 
-    test('initiates with the starting time set to null', () => {
-        expect((new TypeRacer('test')).startTime).toBeNull();
-    });
-
-    test('initiates with the current time set to 0', () => {
-        expect((new TypeRacer('test')).currentSeconds).toEqual(0);
-    });
-
-    test('initiates with the end time set to null', () => {
-        expect((new TypeRacer('test')).endTime).toBeNull();
-    });
-
     test('initiates with the game not yet started', () => {
         expect((new TypeRacer('test')).isRunning).toBe(false);
     });
 
     test('initiates with the game not over', () => {
         expect((new TypeRacer('test')).isOver).toBe(false);
+    });
+
+    test('initiates with its seconds checker set to null', () => {
+        expect((new TypeRacer('test')).secondsChecker).toBeNull();
     })
 });
 
@@ -284,7 +286,7 @@ describe('TypingDisplayer', () => {
         const expectedOutput = '<span class="typing-text non-matched">testing.</span>';
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
-    })
+    });
 
     test('display the typed words and the unmatched chars until the last char of the text', () => {
         const typeRacer = new TypeRacer('This is a testing text.');
