@@ -1,6 +1,6 @@
 'use strict';
 
-const { Player, TypeRacer, TypingDisplayer } = require('../typeracer');
+const { Player, TypeRacer, SecondsChecker, TypingDisplayer } = require('../typeracer');
 
 describe('Player methods', () => {
     test('returns the current typing index of the player', () => {
@@ -119,6 +119,38 @@ describe('TypeRacer Methods', () => {
 
         expect(typeRacer.getMatchedTypingChars()).toEqual(['', 'asdf']);
     });
+
+    test('starts the game by setting its isRunning flag to true', () => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.start();
+
+        expect(typeRacer.isRunning).toBe(true);
+    });
+
+    test('starting the game should initialize its secondsChecker', () => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.start();
+
+        expect(typeRacer.secondsChecker).toBeInstanceOf(SecondsChecker);
+    });
+
+    test('setting the game seconds within the limit', () => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.start();
+        typeRacer.setTime(12);
+
+        expect(typeRacer.isRunning).toBe(true);
+        expect(typeRacer.isOver).toBe(false);
+    });
+
+    test('setting the game seconds off the race limit should end the game', () => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.start();
+        typeRacer.setTime(82); // More than the race time.
+
+        expect(typeRacer.isRunning).toBe(false);
+        expect(typeRacer.isOver).toBe(true);
+    });
 });
 
 describe('TypeRacer constructor', () => {
@@ -160,20 +192,17 @@ describe('TypeRacer constructor', () => {
         expect(typeRacer.players).toEqual([typeRacer.currentPlayer]);
     });
 
-    test('initiates with the starting time set to something', () => {
-        expect((new TypeRacer('test')).startTime).toEqual(expect.anything());
+    test('initiates with the game not yet started', () => {
+        expect((new TypeRacer('test')).isRunning).toBe(false);
     });
 
-    test('initiates with the current time set to 0', () => {
-        expect((new TypeRacer('test')).currentSeconds).toEqual(0);
+    test('initiates with the game not over', () => {
+        expect((new TypeRacer('test')).isOver).toBe(false);
     });
 
-    test('initiates with the end time set to the start time + 1 minute', () => {
-        const typeRacer = new TypeRacer('test');
-        const expectedEndDate = typeRacer.startTime + 60;
-
-        expect((new TypeRacer('test')).endTime).toEqual(expectedEndDate);
-    });
+    test('initiates with its seconds checker set to null', () => {
+        expect((new TypeRacer('test')).secondsChecker).toBeNull();
+    })
 });
 
 describe('TypingDisplayer', () => {
@@ -257,7 +286,7 @@ describe('TypingDisplayer', () => {
         const expectedOutput = '<span class="typing-text non-matched">testing.</span>';
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
-    })
+    });
 
     test('display the typed words and the unmatched chars until the last char of the text', () => {
         const typeRacer = new TypeRacer('This is a testing text.');
@@ -271,5 +300,51 @@ describe('TypingDisplayer', () => {
         const expectedOutput = '<span class="typed-words">This is </span><span class="typing-text non-matched">a testing text.</span>';
 
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
+    });
+});
+
+describe('SecondsChecker', () => {
+    test('it accepts the start time property in its constructor', () => {
+        const startTime = Date.now();
+        const checker = new SecondsChecker(startTime, Date.now());
+
+        expect(checker.startTime).toBe(startTime);
+    });
+
+    test('it accepts the end time property in its constructor', () => {
+        const endTime = Date.now() + 60;
+        const checker = new SecondsChecker(Date.now(), endTime);
+
+        expect(checker.endTime).toBe(endTime);
+    });
+
+    test('it rejects an invalid start time', () => {
+        expect(() => new SecondsChecker(null, Date.now())).toThrow(TypeError);
+    });
+
+    test('it rejects an invalid end time', () => {
+        expect(() => new SecondsChecker(Date.now(), null)).toThrow(TypeError);
+    });
+
+    test('it returns false if the seconds didn\'t pass endTime', () => {
+        const checker = new SecondsChecker(Date.now(), Date.now() + 60);
+        expect(checker.passesEndTime(35)).toBe(false);
+    });
+
+    test('it returns true if the seconds pass endTime', () => {
+        const checker = new SecondsChecker(Date.now(), Date.now() + 60);
+        expect(checker.passesEndTime(61)).toBe(true);
+    });
+
+    test('it refuses to check for invalid seconds', () => {
+        const checker = new SecondsChecker(Date.now(), Date.now() + 60);
+        expect(() => checker.passesEndTime()).toThrow(TypeError);
+        expect(() => checker.passesEndTime(null)).toThrow(TypeError);
+    });
+
+    test('it refuses to check invalid numbers', () => {
+        const checker = new SecondsChecker(Date.now(), Date.now() + 20);
+        expect(() => checker.passesEndTime(-12)).toThrow(RangeError);
+        expect(() => checker.passesEndTime(0)).toThrow(RangeError);
     });
 });
