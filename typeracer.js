@@ -70,12 +70,22 @@ class TypeRacer {
          * Flag indicating if the game is started or not.
          */
         this.isRunning = false;
-    
+
+        /**
+         * A closure reference called to inform the game has just started.
+         */
+        this.onGameStart = null;
+
         /**
          * Flag indicating if hte is over.
          */
         this.isOver = false;
-    
+
+        /**
+         * A closure reference called when the game has just ended.
+         */
+        this.onGameOver = null;
+
         /**
          * The object in charge of checking if the race time is over.
          */
@@ -88,6 +98,10 @@ class TypeRacer {
     start() {
         this.isRunning = true;
         this.secondsChecker = new SecondsChecker(Date.now(), Date.now() + 60);
+        
+        if (typeof this.onGameStart === 'function') {
+            this.onGameStart();
+        }
     }
 
     /**

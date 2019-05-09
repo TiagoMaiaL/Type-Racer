@@ -151,6 +151,16 @@ describe('TypeRacer Methods', () => {
         expect(typeRacer.isRunning).toBe(false);
         expect(typeRacer.isOver).toBe(true);
     });
+
+    test('The game informs if it has started by calling the onGameStart closure', done => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.onGameStart = () => {
+            expect(typeRacer.isRunning).toBe(true);
+            done();
+        };
+        
+        typeRacer.start();
+    });
 });
 
 describe('TypeRacer constructor', () => {
@@ -202,7 +212,15 @@ describe('TypeRacer constructor', () => {
 
     test('initiates with its seconds checker set to null', () => {
         expect((new TypeRacer('test')).secondsChecker).toBeNull();
-    })
+    });
+
+    test('initiates with an onGameStart closure event handler set to null', () => {
+        expect((new TypeRacer('test')).onGameStart).toBeNull();
+    });
+
+    test('initiates with an onGameOver closure event handler set to null', () => {
+        expect((new TypeRacer('test')).onGameOver).toBeNull();
+    });
 });
 
 describe('TypingDisplayer', () => {
