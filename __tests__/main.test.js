@@ -161,6 +161,41 @@ describe('TypeRacer Methods', () => {
         
         typeRacer.start();
     });
+
+    test('The game informs if it has ended by calling the onGameOver closure when time ends', done => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.onGameOver = () => {
+            expect(typeRacer.isRunning).toBe(false);
+            expect(typeRacer.isOver).toBe(true);
+            done();
+        };
+        
+        typeRacer.start();
+        // Make the game end by setting its time.
+        typeRacer.setTime(89);
+    });
+
+    test('The game ends if the player types the whole text and it\'s matched', done => {
+        const typeRacer = new TypeRacer('test game ending');
+        typeRacer.onGameOver = () => {
+            expect(typeRacer.isOver).toBe(true);
+            expect(typeRacer.isRunning).toBe(false);
+
+            expect(typeRacer.currentPlayer.typedWords.length).toBe(3);
+
+            done();
+        };
+        typeRacer.start();
+
+        typeRacer.setTypingText('test ');
+        typeRacer.match();
+
+        typeRacer.setTypingText('game ');
+        typeRacer.match();
+
+        typeRacer.setTypingText('ending');
+        typeRacer.match();
+    });
 });
 
 describe('TypeRacer constructor', () => {
