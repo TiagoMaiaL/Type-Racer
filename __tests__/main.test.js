@@ -151,6 +151,51 @@ describe('TypeRacer Methods', () => {
         expect(typeRacer.isRunning).toBe(false);
         expect(typeRacer.isOver).toBe(true);
     });
+
+    test('The game informs if it has started by calling the onGameStart closure', done => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.onGameStart = () => {
+            expect(typeRacer.isRunning).toBe(true);
+            done();
+        };
+        
+        typeRacer.start();
+    });
+
+    test('The game informs if it has ended by calling the onGameOver closure when time ends', done => {
+        const typeRacer = new TypeRacer('test');
+        typeRacer.onGameOver = () => {
+            expect(typeRacer.isRunning).toBe(false);
+            expect(typeRacer.isOver).toBe(true);
+            done();
+        };
+        
+        typeRacer.start();
+        // Make the game end by setting its time.
+        typeRacer.setTime(89);
+    });
+
+    test('The game ends if the player types the whole text and it\'s matched', done => {
+        const typeRacer = new TypeRacer('test game ending');
+        typeRacer.onGameOver = () => {
+            expect(typeRacer.isOver).toBe(true);
+            expect(typeRacer.isRunning).toBe(false);
+
+            expect(typeRacer.currentPlayer.typedWords.length).toBe(3);
+
+            done();
+        };
+        typeRacer.start();
+
+        typeRacer.setTypingText('test ');
+        typeRacer.match();
+
+        typeRacer.setTypingText('game ');
+        typeRacer.match();
+
+        typeRacer.setTypingText('ending');
+        typeRacer.match();
+    });
 });
 
 describe('TypeRacer constructor', () => {
@@ -202,7 +247,15 @@ describe('TypeRacer constructor', () => {
 
     test('initiates with its seconds checker set to null', () => {
         expect((new TypeRacer('test')).secondsChecker).toBeNull();
-    })
+    });
+
+    test('initiates with an onGameStart closure event handler set to null', () => {
+        expect((new TypeRacer('test')).onGameStart).toBeNull();
+    });
+
+    test('initiates with an onGameOver closure event handler set to null', () => {
+        expect((new TypeRacer('test')).onGameOver).toBeNull();
+    });
 });
 
 describe('TypingDisplayer', () => {

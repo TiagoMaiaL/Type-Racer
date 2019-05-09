@@ -70,12 +70,22 @@ class TypeRacer {
          * Flag indicating if the game is started or not.
          */
         this.isRunning = false;
-    
+
+        /**
+         * A closure reference called to inform the game has just started.
+         */
+        this.onGameStart = null;
+
         /**
          * Flag indicating if hte is over.
          */
         this.isOver = false;
-    
+
+        /**
+         * A closure reference called when the game has just ended.
+         */
+        this.onGameOver = null;
+
         /**
          * The object in charge of checking if the race time is over.
          */
@@ -88,6 +98,22 @@ class TypeRacer {
     start() {
         this.isRunning = true;
         this.secondsChecker = new SecondsChecker(Date.now(), Date.now() + 60);
+
+        if (typeof this.onGameStart === 'function') {
+            this.onGameStart();
+        }
+    }
+
+    /**
+     * Ends the game, by calling its end closure reference, if there's one.
+     */
+    end() {
+        this.isOver = true;
+        this.isRunning = false;
+
+        if (typeof this.onGameOver === 'function') {
+            this.onGameOver();
+        }
     }
 
     /**
@@ -96,8 +122,9 @@ class TypeRacer {
      * @param {Number} seconds - the amount of seconds since the game began.
      */
     setTime(seconds) {
-        this.isOver = this.secondsChecker.passesEndTime(seconds);
-        this.isRunning = !this.isOver;
+        if (this.secondsChecker.passesEndTime(seconds)) {
+            this.end();
+        }
     }
 
     /**
@@ -169,6 +196,10 @@ class TypeRacer {
         if (matches) {
             this.currentPlayer.typingText = '';
             this.currentPlayer.typedWords.push(word);
+
+            if (this.getRemainingText().length === 0) {
+                this.end();
+            }
         }
 
         return matches;
@@ -186,7 +217,7 @@ class SecondsChecker {
     constructor(startTime, endTime) {
         for (let i = 0; i < arguments.length; i++) {
             const argument = arguments[i];
-    
+
             if (typeof argument !== 'number' || isNaN(argument)) {
                 throw new TypeError('The passed date must be a valid time interval');
             }
