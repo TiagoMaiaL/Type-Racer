@@ -95,6 +95,18 @@ class TypingDisplayer {
  */
 class TypingTextDisplay {
 
+    constructor() {
+        this.currentText = null;
+    }
+
+    /**
+     * Given a text, display it to the user in the text HTML element.
+     * @param {String} text - the text to be displayed.
+     */
+    display(text) {
+        this.currentText = text;
+        // TODO: Display the text to the user.
+    }
 }
 
 /**
@@ -102,6 +114,22 @@ class TypingTextDisplay {
  */
 class TypingTextArea {
 
+    constructor() {
+        this.chars = '';
+
+        /**
+         * A closure to be called when the text change.
+         */
+        this.onType = null;
+    }
+
+    /**
+     * Clears the chars typed by the user so far.
+     */
+    clear() {
+        this.chars = '';
+        // TODO: Clear the element's text.
+    }
 }
 
 module.exports = { TypeRacerController, TypingDisplayer, TypingTextArea, TypingTextDisplay };

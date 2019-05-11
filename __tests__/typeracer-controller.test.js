@@ -129,3 +129,36 @@ describe('TypingDisplayer', () => {
         expect(displayer.getHtmlText()).toEqual(expectedOutput);
     });
 });
+
+describe('TypingTextDisplay', () => {
+    test('it starts with its current text set to null', () => {
+        const textDisplay = new TypingTextDisplay();
+        expect(textDisplay.currentText).toBeDefined();
+    });
+
+    test('it has a method for setting the text it\'s displaying', () => {
+        const textDisplay = new TypingTextDisplay();
+        textDisplay.display('testing');
+        expect(textDisplay.currentText).toBe('testing');
+    });
+});
+
+describe('TypingTextArea', () => {
+    test('it starts with its typedText empty', () => {
+        const textArea = new TypingTextArea();
+        expect(textArea.chars).toBe('');
+    });
+
+    test('it has a method to clear it\'s content', () => {
+        const textArea = new TypingTextArea();
+        textArea.chars = 'testing';
+        textArea.clear();
+
+        expect(textArea.chars).toBe('');
+    });
+
+    test('it has a callback property to be called when the text changes', () => {
+        const textArea = new TypingTextArea();
+        expect(textArea.onType).toBeNull();
+    });
+});
