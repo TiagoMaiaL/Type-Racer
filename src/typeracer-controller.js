@@ -21,6 +21,13 @@ class TypeRacerController {
     }
 
     /**
+     * Starts the game.
+     */
+    startGame() {
+        this.typeRacer.start();
+    }
+
+    /**
      * Method to be called when the typeRacer game starts.
      */
     handleGameStart() {
@@ -39,9 +46,16 @@ class TypeRacerController {
      * Given a text, set it in the game and matches it.
      * @param {String} chars - the chars typed by the user.
      */
-    handleTypedChars(text) {
+    handleTypedChars = (text) => {
+        if (!this.typeRacer.isRunning) {
+            return;
+        }
+
         this.typeRacer.setTypingText(text);
-        this.typeRacer.match();
+
+        if (this.typeRacer.match()) {
+            this.textArea.clear();
+        }
 
         this.textDisplay.display(this.typingDisplayer.getHtmlText());
     }
@@ -127,7 +141,15 @@ class TypingDisplayer {
 class TypingTextDisplay {
 
     constructor() {
+        /**
+         * The text being displayed to the user.
+         */
         this.currentText = null;
+
+        /**
+         * The paragraph element being handled by this object.
+         */
+        this.view = $('.text-to-type');
     }
 
     /**
@@ -136,7 +158,7 @@ class TypingTextDisplay {
      */
     display(text) {
         this.currentText = text;
-        // TODO: Display the text to the user.
+        this.view.html(this.currentText);
     }
 }
 
@@ -146,12 +168,27 @@ class TypingTextDisplay {
 class TypingTextArea {
 
     constructor() {
+        /**
+         * The chars in the text area element.
+         */
         this.chars = '';
 
         /**
          * A closure to be called when the text change.
          */
         this.onType = null;
+
+        /**
+         * The element being handled by this view.
+         */
+        this.view = $('.type-area');
+        this.view.keyup(_ => {
+            this.chars = this.view.val();
+
+            if (typeof this.onType === 'function') {
+                this.onType(this.chars);
+            }
+        });
     }
 
     /**
@@ -159,7 +196,7 @@ class TypingTextArea {
      */
     clear() {
         this.chars = '';
-        // TODO: Clear the element's text.
+        this.view.val('');
     }
 }
 

@@ -50,6 +50,11 @@ describe('TypeRacerController', () => {
 
         expect(this.controller.textDisplay.currentText).toBe(this.controller.typingDisplayer.getHtmlText());
     });
+
+    test('it has a method to start the game', () => {
+        this.controller.startGame();
+        expect(this.typeRacer.isRunning).toBe(true);
+    });
 });
 
 describe('TypingDisplayer', () => {
