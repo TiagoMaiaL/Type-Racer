@@ -9,10 +9,41 @@
 class TypeRacerController {
     constructor(typeRacer, typingDisplayer) {
         this.typeRacer = typeRacer;
-        this.typingDisplayer = typingDisplayer;  
+        this.typeRacer.onGameStart = this.handleGameStart;
+        this.typeRacer.onGameOver = this.handleGameOver;
+
+        this.typingDisplayer = typingDisplayer;
 
         this.textDisplay = new TypingTextDisplay();
+
         this.textArea = new TypingTextArea();
+        this.textArea.onType = this.handleTypedChars;
+    }
+
+    /**
+     * Method to be called when the typeRacer game starts.
+     */
+    handleGameStart() {
+        // TODO: Update the UI.
+        // TODO: Start the timer.
+    }
+
+    /**
+     * Method to be called when the typeRacer game ends.
+     */
+    handleGameOver() {
+        // TODO: update the UI.
+    }
+
+    /**
+     * Given a text, set it in the game and matches it.
+     * @param {String} chars - the chars typed by the user.
+     */
+    handleTypedChars(text) {
+        this.typeRacer.setTypingText(text);
+        this.typeRacer.match();
+
+        this.textDisplay.display(this.typingDisplayer.getHtmlText());
     }
 }
 

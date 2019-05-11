@@ -5,7 +5,7 @@ const { TypeRacer } = require('../src/typeracer');
 
 describe('TypeRacerController', () => {
     beforeEach(() => {
-        this.typeRacer = new TypeRacer('test');
+        this.typeRacer = new TypeRacer('Testing');
         this.typingDisplayer = new TypingDisplayer(this.typeRacer);
         this.controller = new TypeRacerController(this.typeRacer, this.typingDisplayer);
     });
@@ -29,6 +29,26 @@ describe('TypeRacerController', () => {
 
     test('it creates a view that gets the user input', () => {
         expect(this.controller.textArea).toBeInstanceOf(TypingTextArea)
+    });
+
+    test('it assigns its handleGameStart method as the callback of the typeRacer game', () => {
+        expect(this.controller.handleGameStart).toBe(this.typeRacer.onGameStart);
+    });
+
+    test('it assigns its handleGameOver method as the callback of the typeRacer game', () => {
+        expect(this.controller.handleGameOver).toBe(this.typeRacer.onGameOver);
+    });
+
+    test('it assigns its handleTypeChars method as the callback of the text area', () => {
+        expect(this.controller.handleTypedChars).toBe(this.controller.textArea.onType);
+    });
+
+    test('it sets and matches the typed text in the game', () => {
+        this.controller.typeRacer = new TypeRacer('text')
+        this.controller.typingDisplayer.typeRacer = this.controller.typeRacer;
+        this.controller.handleTypedChars('tes');
+
+        expect(this.controller.textDisplay.currentText).toBe(this.controller.typingDisplayer.getHtmlText());
     });
 });
 
