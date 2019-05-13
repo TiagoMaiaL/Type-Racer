@@ -32,28 +32,29 @@ describe('TypeRacerController', () => {
     });
 
     test('it assigns its handleGameStart method as the callback of the typeRacer game', () => {
-        expect(this.controller.handleGameStart).toBe(this.typeRacer.onGameStart);
+        expect(this.typeRacer.onGameStart).toBeInstanceOf(Function);
     });
 
     test('it assigns its handleGameOver method as the callback of the typeRacer game', () => {
-        expect(this.controller.handleGameOver).toBe(this.typeRacer.onGameOver);
+        expect(this.typeRacer.onGameOver).toBeInstanceOf(Function);
     });
 
     test('it assigns its handleTypeChars method as the callback of the text area', () => {
-        expect(this.controller.handleTypedChars).toBe(this.controller.textArea.onType);
-    });
-
-    test('it sets and matches the typed text in the game', () => {
-        this.controller.typeRacer = new TypeRacer('text')
-        this.controller.typingDisplayer.typeRacer = this.controller.typeRacer;
-        this.controller.handleTypedChars('tes');
-
-        expect(this.controller.textDisplay.currentText).toBe(this.controller.typingDisplayer.getHtmlText());
+        expect(this.controller.textArea.onType).toBeInstanceOf(Function);
     });
 
     test('it has a method to start the game', () => {
         this.controller.startGame();
         expect(this.typeRacer.isRunning).toBe(true);
+    });
+
+    test('it sets and matches the typed text in the game', () => {
+        this.controller.typeRacer = new TypeRacer('text')
+        this.controller.startGame();
+        this.controller.typingDisplayer.typeRacer = this.controller.typeRacer;
+        this.controller.handleTypedChars('tes');
+
+        expect(this.controller.textDisplay.currentText).toBe(this.controller.typingDisplayer.getHtmlText());
     });
 });
 

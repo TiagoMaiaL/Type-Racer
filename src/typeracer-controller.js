@@ -5,19 +5,20 @@
  * @param {TypeRacer} typeRacer - the typeRacer object to be managed.
  * @param {TypingDisplayer} typingDisplayer - the object in charge of generating the
  *                                            HTML code to display the game.
+ * @param {JQuery} jQuery - the jQuery library.
  */
 class TypeRacerController {
-    constructor(typeRacer, typingDisplayer) {
+    constructor(typeRacer, typingDisplayer, jQuery) {
         this.typeRacer = typeRacer;
-        this.typeRacer.onGameStart = this.handleGameStart;
-        this.typeRacer.onGameOver = this.handleGameOver;
+        this.typeRacer.onGameStart = () => this.handleGameStart();
+        this.typeRacer.onGameOver = () => this.handleGameOver();
 
         this.typingDisplayer = typingDisplayer;
 
-        this.textDisplay = new TypingTextDisplay();
+        this.textDisplay = new TypingTextDisplay(jQuery);
 
-        this.textArea = new TypingTextArea();
-        this.textArea.onType = this.handleTypedChars;
+        this.textArea = new TypingTextArea(jQuery);
+        this.textArea.onType = text => this.handleTypedChars(text);
     }
 
     /**
@@ -46,7 +47,7 @@ class TypeRacerController {
      * Given a text, set it in the game and matches it.
      * @param {String} chars - the chars typed by the user.
      */
-    handleTypedChars = (text) => {
+    handleTypedChars(text) {
         if (!this.typeRacer.isRunning) {
             return;
         }
@@ -137,10 +138,11 @@ class TypingDisplayer {
 
 /**
  * The view object displaying the text to the user.
+ * @param {JQuery} jQuery - the jquery library used to manipulate the element.
  */
 class TypingTextDisplay {
 
-    constructor() {
+    constructor(jQuery) {
         /**
          * The text being displayed to the user.
          */
@@ -149,7 +151,7 @@ class TypingTextDisplay {
         /**
          * The paragraph element being handled by this object.
          */
-        this.view = $('.text-to-type');
+        this.view = typeof jQuery === 'function' ? jQuery('.text-to-type') : null;
     }
 
     /**
@@ -158,16 +160,20 @@ class TypingTextDisplay {
      */
     display(text) {
         this.currentText = text;
-        this.view.html(this.currentText);
+
+        if (this.view !== null) {
+            this.view.html(this.currentText);
+        }
     }
 }
 
 /**
  * The user text area view object.
+ * @param {JQuery} jQuery - the jQuery library used to manipulate the element.
  */
 class TypingTextArea {
 
-    constructor() {
+    constructor(jQuery) {
         /**
          * The chars in the text area element.
          */
@@ -181,14 +187,16 @@ class TypingTextArea {
         /**
          * The element being handled by this view.
          */
-        this.view = $('.type-area');
-        this.view.keyup(_ => {
-            this.chars = this.view.val();
-
-            if (typeof this.onType === 'function') {
-                this.onType(this.chars);
-            }
-        });
+        this.view = typeof jQuery === 'function' ? jQuery('.type-area') : null;
+        if (this.view !== null) {
+            this.view.keyup(_ => {
+                this.chars = this.view.val();
+    
+                if (typeof this.onType === 'function') {
+                    this.onType(this.chars);
+                }
+            });
+        }
     }
 
     /**
@@ -196,7 +204,9 @@ class TypingTextArea {
      */
     clear() {
         this.chars = '';
-        this.view.val('');
+        if (this.view !== null) {
+            this.view.val('');
+        }
     }
 }
 

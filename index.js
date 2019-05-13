@@ -5,6 +5,6 @@ $('document').ready(_ => {
     const typeRacer = new TypeRacer($('.text-to-type').text());
     const displayer = new TypingDisplayer(typeRacer);
 
-    const controller = new TypeRacerController(typeRacer, displayer);
+    const controller = new TypeRacerController(typeRacer, displayer, $);
     controller.startGame();
 });
