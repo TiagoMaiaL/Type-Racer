@@ -47,6 +47,13 @@ describe('TypeRacerController', () => {
         expect(this.typeRacer.onGameOver).toBeInstanceOf(Function);
     });
 
+    test('setting a new race changes the typingDisplayer to display the typed words of the new game object', () => {
+        const typeRacer = new TypeRacer('testing.');
+        this.controller.setupRace(typeRacer);
+        
+        expect(this.controller.typingDisplayer.typeRacer).toBe(typeRacer);
+    });
+
     test('setting a new race displays its text', () => {
         this.controller.setupRace(this.typeRacer);
 

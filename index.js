@@ -2,24 +2,20 @@
 
 $('document').ready(_ => {
     const textToType = 'Testing game.';
+    let gamesCount = 1;
 
-    let controller = null;
+    // Instantiate typeracer.
+    const typeRacer = new TypeRacer(textToType);
 
-    const makeGame = text => {
-        // Instantiate typeracer.
-        const typeRacer = new TypeRacer(text);
+    const displayer = new TypingDisplayer();
+    displayer.setTypeRacer(typeRacer);
 
-        const displayer = new TypingDisplayer();
-        displayer.setTypeRacer(typeRacer);
+    let controller = new TypeRacerController(displayer, $);
+    controller.setupRace(typeRacer);
+    controller.startGame();
 
-        controller = new TypeRacerController(displayer, $);
-        controller.setupRace(typeRacer);
-        controller.startGame();
-    }
-    makeGame(textToType);
-    
-    // TODO: Decide if the new game feature should be moved into the controller.
     $('.new-race').click(() => {
-        makeGame(textToType);
+        controller.setupRace(new TypeRacer(`${textToType} ${gamesCount++}`));
+        controller.startGame();
     });
 });

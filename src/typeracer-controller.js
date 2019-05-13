@@ -27,6 +27,8 @@ class TypeRacerController {
         this.typeRacer.onGameStart = () => this.handleGameStart();
         this.typeRacer.onGameOver = () => this.handleGameOver();
 
+        this.typingDisplayer.setTypeRacer(typeRacer);
+
         this.textDisplay.display(this.typeRacer.text);
     }
 
