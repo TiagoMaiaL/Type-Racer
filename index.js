@@ -8,9 +8,12 @@ $('document').ready(_ => {
     const makeGame = text => {
         // Instantiate typeracer.
         const typeRacer = new TypeRacer(text);
-        const displayer = new TypingDisplayer(typeRacer);
 
-        controller = new TypeRacerController(typeRacer, displayer, $);
+        const displayer = new TypingDisplayer();
+        displayer.setTypeRacer(typeRacer);
+
+        controller = new TypeRacerController(displayer, $);
+        controller.setupRace(typeRacer);
         controller.startGame();
     }
     makeGame(textToType);

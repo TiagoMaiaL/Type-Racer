@@ -2,28 +2,32 @@
 
 /**
  * The object in charge of controlling and displaying the game.
- * @param {TypeRacer} typeRacer - the typeRacer object to be managed.
- * @param {TypingDisplayer} typingDisplayer - the object in charge of generating the
- *                                            HTML code to display the game.
+ * @param {TypingDisplayer} typingDisplayer - the object in charge of generating the HTML code to display the game.
  * @param {JQuery} jQuery - the jQuery library.
  */
 class TypeRacerController {
-    constructor(typeRacer, typingDisplayer, jQuery) {
-        this.typeRacer = typeRacer;
-        this.typeRacer.onGameStart = () => this.handleGameStart();
-        this.typeRacer.onGameOver = () => this.handleGameOver();
-
+    constructor(typingDisplayer, jQuery) {
         this.typingDisplayer = typingDisplayer;
 
         this.textDisplay = new TypingTextDisplay(jQuery);
-        // TODO: Put the text in the constructor.
-        this.textDisplay.display(typeRacer.text);
 
         this.textArea = new TypingTextArea(jQuery);
         this.textArea.onType = text => this.handleTypedChars(text);
 
         // TODO: Remove this later, and move all jquery code to the views. Only inject it from here.
         this.jQuery = jQuery || null;
+    }
+
+    /**
+     * Given a typeRacer game, configures it and starts a new race using it.
+     * @param {TypeRacer} typeRacer - the typeRacer object to be managed.
+     */
+    setupRace(typeRacer) {
+        this.typeRacer = typeRacer;
+        this.typeRacer.onGameStart = () => this.handleGameStart();
+        this.typeRacer.onGameOver = () => this.handleGameOver();
+
+        this.textDisplay.display(this.typeRacer.text);
     }
 
     /**
@@ -82,11 +86,15 @@ class TypeRacerController {
 }
 
 /**
- * The object in charge of generating the formatted html to display the game.
+ * The object in charge of generating the formatted html to display the typed words and chars of the game.
  */
 class TypingDisplayer {
 
-    constructor(typeRacer) {
+    /**
+     * Given a typeRacer game, sets it to be displayed.
+     * @param {TypeRacer} typeRacer - the game to be displayed.
+     */
+    setTypeRacer(typeRacer) {
         /**
          * The TypeRacer game containing the data to be displayed.
          */
