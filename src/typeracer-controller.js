@@ -16,9 +16,13 @@ class TypeRacerController {
         this.typingDisplayer = typingDisplayer;
 
         this.textDisplay = new TypingTextDisplay(jQuery);
+        // TODO: Put the text in the constructor.
+        this.textDisplay.display(typeRacer.text);
 
         this.textArea = new TypingTextArea(jQuery);
         this.textArea.onType = text => this.handleTypedChars(text);
+
+        this.jQuery = jQuery || null;
     }
 
     /**
@@ -33,6 +37,12 @@ class TypeRacerController {
      */
     handleGameStart() {
         // TODO: Update the UI.
+        // TODO: Convert this to a specific view class.
+        if (this.jQuery !== null) {
+            this.jQuery('.game-view').removeClass('game-over');
+        }
+        this.textArea.enable();
+
         // TODO: Start the timer.
     }
 
@@ -41,6 +51,12 @@ class TypeRacerController {
      */
     handleGameOver() {
         // TODO: update the UI.
+        this.textArea.disable();
+
+        // TODO: Convert this to a specific view class.
+        if (this.jQuery !== null) {
+            this.jQuery('.game-view').addClass('game-over');
+        }
     }
 
     /**
@@ -206,6 +222,24 @@ class TypingTextArea {
         this.chars = '';
         if (this.view !== null) {
             this.view.val('');
+        }
+    }
+
+    /**
+     * Enables the text area element.
+     */
+    enable() {
+        if (this.view !== null) {
+            this.view.prop('disabled', false);
+        }
+    }
+
+    /**
+     * Disables the text area element.
+     */
+    disable() {
+        if (this.view !== null) {
+            this.view.prop('disabled', true);
         }
     }
 }
