@@ -22,6 +22,7 @@ class TypeRacerController {
         this.textArea = new TypingTextArea(jQuery);
         this.textArea.onType = text => this.handleTypedChars(text);
 
+        // TODO: Remove this later, and move all jquery code to the views. Only inject it from here.
         this.jQuery = jQuery || null;
     }
 
@@ -40,6 +41,7 @@ class TypeRacerController {
         // TODO: Convert this to a specific view class.
         if (this.jQuery !== null) {
             this.jQuery('.game-view').removeClass('game-over');
+            this.jQuery('.new-race').addClass('hidden');
         }
         this.textArea.enable();
 
@@ -56,6 +58,7 @@ class TypeRacerController {
         // TODO: Convert this to a specific view class.
         if (this.jQuery !== null) {
             this.jQuery('.game-view').addClass('game-over');
+            this.jQuery('.new-race').removeClass('hidden');
         }
     }
 

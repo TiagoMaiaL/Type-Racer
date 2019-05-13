@@ -3,10 +3,20 @@
 $('document').ready(_ => {
     const textToType = 'Testing game.';
 
-    // Instantiate typeracer.
-    const typeRacer = new TypeRacer(textToType);
-    const displayer = new TypingDisplayer(typeRacer);
+    let controller = null;
 
-    const controller = new TypeRacerController(typeRacer, displayer, $);
-    controller.startGame();
+    const makeGame = text => {
+        // Instantiate typeracer.
+        const typeRacer = new TypeRacer(text);
+        const displayer = new TypingDisplayer(typeRacer);
+
+        controller = new TypeRacerController(typeRacer, displayer, $);
+        controller.startGame();
+    }
+    makeGame(textToType);
+    
+    // TODO: Decide if the new game feature should be moved into the controller.
+    $('.new-race').click(() => {
+        makeGame(textToType);
+    });
 });
