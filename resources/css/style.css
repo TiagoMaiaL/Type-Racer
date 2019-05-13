@@ -1,6 +1,12 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400');
 
+/* General style */
+
+* {
+    box-sizing: border-box;
+}
+
 html {
     font-family: 'Roboto', sans-serif;
     font-size: 18px;
@@ -23,10 +29,23 @@ p {
     letter-spacing: 0.05em;
 }
 
+.hidden {
+    display: none;
+}
+
+/* Typing */
+
 .type-area {
+    height: 50px;
     width: 100%;
-    font-size: 18px;
-    height: 25px;
+    padding: 15px;
+    font-size: 20px;
+    line-height: 20px;
+    resize: none;
+    border: none;
+    border-bottom: 2px solid black;
+    margin-bottom: 25px;
+    background-color: #DEFFF2;
 }
 
 .typed-words {
@@ -43,4 +62,23 @@ p {
 
 .non-matched {
     background-color: #FC717D;
+}
+
+/* Game Over */
+
+.game-over {
+    opacity: 0.3;
+}
+
+/* Game controls */
+
+.control {
+    height: 34px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: underline;
+    background-color: white;
+    border: none;
+    cursor: pointer;
 }
