@@ -166,21 +166,41 @@ class TypingDisplayer {
 }
 
 /**
+ * A general view object, wrapping an html element.
+ * @param {String} selector - the Selector of the element.
+ * @param {JQuery} jQuery - the jQuery library used to get the elements.
+ */
+class View {
+    constructor(selector, jQuery) {
+        // If tests are running, don't call jQuery and wrap the element objects in a proxy, 
+        // so it doesn't throw errors when testing.
+        if (typeof process !== 'undefined') {
+            if (process.env.JEST_WORKER_ID !== undefined) {
+                this.element = new Proxy({}, {
+                    get(target, name) {
+                        return name in target ? target[name] : new Function();
+                    }
+                });
+            }
+        } else {
+            this.element = jQuery(selector)
+        }
+    }
+}
+
+/**
  * The view object displaying the text to the user.
  * @param {JQuery} jQuery - the jquery library used to manipulate the element.
  */
-class TypingTextDisplay {
+class TypingTextDisplay extends View {
 
     constructor(jQuery) {
+        super('.text-to-type', jQuery);
+
         /**
          * The text being displayed to the user.
          */
         this.currentText = null;
-
-        /**
-         * The paragraph element being handled by this object.
-         */
-        this.view = typeof jQuery === 'function' ? jQuery('.text-to-type') : null;
     }
 
     /**
@@ -189,10 +209,7 @@ class TypingTextDisplay {
      */
     display(text) {
         this.currentText = text;
-
-        if (this.view !== null) {
-            this.view.html(this.currentText);
-        }
+        this.element.html(this.currentText);
     }
 }
 
@@ -200,9 +217,11 @@ class TypingTextDisplay {
  * The user text area view object.
  * @param {JQuery} jQuery - the jQuery library used to manipulate the element.
  */
-class TypingTextArea {
+class TypingTextArea extends View {
 
     constructor(jQuery) {
+        super('.type-area', jQuery);
+
         /**
          * The chars in the text area element.
          */
@@ -212,20 +231,14 @@ class TypingTextArea {
          * A closure to be called when the text change.
          */
         this.onType = null;
+        
+        this.element.keyup(_ => {
+            this.chars = this.element.val();
 
-        /**
-         * The element being handled by this view.
-         */
-        this.view = typeof jQuery === 'function' ? jQuery('.type-area') : null;
-        if (this.view !== null) {
-            this.view.keyup(_ => {
-                this.chars = this.view.val();
-    
-                if (typeof this.onType === 'function') {
-                    this.onType(this.chars);
-                }
-            });
-        }
+            if (typeof this.onType === 'function') {
+                this.onType(this.chars);
+            }
+        });
     }
 
     /**
@@ -233,29 +246,23 @@ class TypingTextArea {
      */
     clear() {
         this.chars = '';
-        if (this.view !== null) {
-            this.view.val('');
-        }
+        this.element.val('');
     }
 
     /**
      * Enables the text area element.
      */
     enable() {
-        if (this.view !== null) {
-            this.view.prop('disabled', false);
-        }
+        this.element.prop('disabled', false);
     }
 
     /**
      * Disables the text area element.
      */
     disable() {
-        if (this.view !== null) {
-            this.view.prop('disabled', true);
-        }
+        this.element.prop('disabled', true);
     }
 }
 
-module.exports = { TypeRacerController, TypingDisplayer, TypingTextArea, TypingTextDisplay };
+module.exports = { TypeRacerController, TypingDisplayer, View, TypingTextArea, TypingTextDisplay };
  

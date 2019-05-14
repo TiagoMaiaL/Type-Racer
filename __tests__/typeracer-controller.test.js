@@ -1,6 +1,6 @@
 'use strict';
 
-const { TypeRacerController, TypingDisplayer, TypingTextArea, TypingTextDisplay } = require('../src/typeracer-controller');
+const { TypeRacerController, TypingDisplayer, View, TypingTextArea, TypingTextDisplay } = require('../src/typeracer-controller');
 const { TypeRacer } = require('../src/typeracer');
 
 describe('TypeRacerController', () => {
@@ -178,6 +178,18 @@ describe('TypingDisplayer', () => {
         displayer.setTypeRacer(typeRacer);
 
         expect(displayer.getHtmlText()).toEqual('<span class="typed-words">This is </span><span class="typing-text non-matched">a testing text.</span>');
+    });
+});
+
+describe('View', () => {
+    test('it has an element property', () => {
+        const view = new View('.test', new Function());
+        expect(view.element).toBeDefined();
+    });
+
+    test('calling a method that doesn\'t exist on its element should not throw an error in the tests', () => {
+        const view = new View('.test', new Function());
+        expect(view.element.any).toBeInstanceOf(Function);
     });
 });
 
