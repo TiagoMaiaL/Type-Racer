@@ -64,12 +64,6 @@ p {
     background-color: #FC717D;
 }
 
-/* Game Over */
-
-.game-over {
-    opacity: 0.3;
-}
-
 /* Game controls */
 
 .control {

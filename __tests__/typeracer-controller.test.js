@@ -1,6 +1,6 @@
 'use strict';
 
-const { TypeRacerController, TypingDisplayer, View, Button, TypingTextArea, TypingTextDisplay } = require('../src/typeracer-controller');
+const { TypeRacerController, TypingDisplayer, View, TypingTextArea, TypingTextDisplay } = require('../src/typeracer-controller');
 const { TypeRacer } = require('../src/typeracer');
 
 describe('TypeRacerController', () => {
@@ -35,7 +35,11 @@ describe('TypeRacerController', () => {
     });
 
     test('it creates a view for the new race html button', () => {
-        expect(this.controller.newRaceButton).toBeInstanceOf(Button);
+        expect(this.controller.newRaceButton).toBeInstanceOf(View);
+    });
+
+    test('it creates a property for the game container\'s view', () => {
+        expect(this.controller.gameContainerView).toBeInstanceOf(View);
     });
 
     test('it has a method to configure a new race', () => {
@@ -90,6 +94,16 @@ describe('TypeRacerController', () => {
         this.controller.handleGameOver();
 
         expect(this.controller.newRaceButton.isHidden).toBe(false);
+    });
+
+    test('it fades the container view when the game is over', () => {
+        this.controller.handleGameOver();
+        expect(this.controller.gameContainerView.opacity).toBeLessThan(1);
+    });
+
+    test('it displays the container view when the game is running', () => {
+        this.controller.handleGameStart();
+        expect(this.controller.gameContainerView.opacity).toBe(1);
     });
 });
 
@@ -208,21 +222,31 @@ describe('View', () => {
         const view = new View('.test', new Function());
         expect(view.element.any).toBeInstanceOf(Function);
     });
-});
 
-describe('Button', () => {
     test('it has a method to hide the element', () => {
-        const button = new Button();
-        button.hide();
+        const view = new View();
+        view.hide();
 
-        expect(button.isHidden).toBe(true);
+        expect(view.isHidden).toBe(true);
     });
 
     test('it has a method to show the element', () => {
-        const button = new Button();
-        button.show();
+        const view = new View();
+        view.isHidden = true;
+        view.show();
 
-        expect(button.isHidden).toBe(false);
+        expect(view.isHidden).toBe(false);
+    });
+
+    test('is has opacity', () => {
+        const view = new View();
+        expect(view.opacity).toBe(1);
+    });
+
+    test('is has a method to set the view\'s opacity', () => {
+        const view = new View();
+        view.setOpacity(0.5);
+        expect(view.opacity).toBe(0.5);
     });
 });
 

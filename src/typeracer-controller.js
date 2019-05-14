@@ -9,15 +9,13 @@ class TypeRacerController {
     constructor(typingDisplayer, jQuery) {
         this.typingDisplayer = typingDisplayer;
 
-        this.newRaceButton = new Button('.new-race', jQuery);
+        this.newRaceButton = new View('.new-race', jQuery);
+        this.gameContainerView = new View('.game-view', jQuery);
 
         this.textDisplay = new TypingTextDisplay(jQuery);
 
         this.textArea = new TypingTextArea(jQuery);
         this.textArea.onType = text => this.handleTypedChars(text);
-
-        // TODO: Remove this later, and move all jquery code to the views. Only inject it from here.
-        this.jQuery = jQuery || null;
     }
 
     /**
@@ -45,11 +43,7 @@ class TypeRacerController {
      * Method to be called when the typeRacer game starts.
      */
     handleGameStart() {
-        // TODO: Update the UI.
-        // TODO: Convert this to a specific view class.
-        if (this.jQuery !== null) {
-            this.jQuery('.game-view').removeClass('game-over');
-        }
+        this.gameContainerView.setOpacity(1);
         this.newRaceButton.hide();
         this.textArea.enable();
 
@@ -60,13 +54,8 @@ class TypeRacerController {
      * Method to be called when the typeRacer game ends.
      */
     handleGameOver() {
-        // TODO: update the UI.
         this.textArea.disable();
-
-        // TODO: Convert this to a specific view class.
-        if (this.jQuery !== null) {
-            this.jQuery('.game-view').addClass('game-over');
-        }
+        this.gameContainerView.setOpacity(0.3);
         this.newRaceButton.show();
     }
 
@@ -187,23 +176,13 @@ class View {
         } else {
             this.element = jQuery(selector)
         }
-    }
-}
-
-/**
- * A Button view object.
- * @param {String} selector - the selector used to get the element.
- * @param {JQuery} jQuery - the jQuery library used to manipulate the button.
- */
-class Button extends View {
-    constructor(selector, jQuery) {
-        super(selector, jQuery);
 
         this.isHidden = false;
+        this.opacity = this.element.css('opacity') || 1;
     }
 
     /**
-     * Hides the element.
+     * Hides the view.
      */
     hide() {
         this.element.addClass('hidden');
@@ -211,13 +190,21 @@ class Button extends View {
     }
 
     /**
-     * Shows the element.
+     * Shows the view.
      */
     show() {
         this.element.removeClass('hidden');
         this.isHidden = false;
     }
-}
+
+    /**
+     * Sets the view opactity to the passed amount.
+     */
+    setOpacity(amount) {
+        this.element.fadeTo('fast', amount);
+        this.opacity = amount;
+    }
+ }
 
 /**
  * The view object displaying the text to the user.
@@ -295,5 +282,5 @@ class TypingTextArea extends View {
     }
 }
 
-module.exports = { TypeRacerController, TypingDisplayer, View, Button, TypingTextArea, TypingTextDisplay };
+module.exports = { TypeRacerController, TypingDisplayer, View, TypingTextArea, TypingTextDisplay };
  
