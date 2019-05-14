@@ -9,6 +9,8 @@ class TypeRacerController {
     constructor(typingDisplayer, jQuery) {
         this.typingDisplayer = typingDisplayer;
 
+        this.newRaceButton = new Button('.new-race', jQuery);
+
         this.textDisplay = new TypingTextDisplay(jQuery);
 
         this.textArea = new TypingTextArea(jQuery);
@@ -47,8 +49,8 @@ class TypeRacerController {
         // TODO: Convert this to a specific view class.
         if (this.jQuery !== null) {
             this.jQuery('.game-view').removeClass('game-over');
-            this.jQuery('.new-race').addClass('hidden');
         }
+        this.newRaceButton.hide();
         this.textArea.enable();
 
         // TODO: Start the timer.
@@ -64,8 +66,8 @@ class TypeRacerController {
         // TODO: Convert this to a specific view class.
         if (this.jQuery !== null) {
             this.jQuery('.game-view').addClass('game-over');
-            this.jQuery('.new-race').removeClass('hidden');
         }
+        this.newRaceButton.show();
     }
 
     /**
@@ -189,6 +191,35 @@ class View {
 }
 
 /**
+ * A Button view object.
+ * @param {String} selector - the selector used to get the element.
+ * @param {JQuery} jQuery - the jQuery library used to manipulate the button.
+ */
+class Button extends View {
+    constructor(selector, jQuery) {
+        super(selector, jQuery);
+
+        this.isHidden = false;
+    }
+
+    /**
+     * Hides the element.
+     */
+    hide() {
+        this.element.addClass('hidden');
+        this.isHidden = true;
+    }
+
+    /**
+     * Shows the element.
+     */
+    show() {
+        this.element.removeClass('hidden');
+        this.isHidden = false;
+    }
+}
+
+/**
  * The view object displaying the text to the user.
  * @param {JQuery} jQuery - the jquery library used to manipulate the element.
  */
@@ -264,5 +295,5 @@ class TypingTextArea extends View {
     }
 }
 
-module.exports = { TypeRacerController, TypingDisplayer, View, TypingTextArea, TypingTextDisplay };
+module.exports = { TypeRacerController, TypingDisplayer, View, Button, TypingTextArea, TypingTextDisplay };
  

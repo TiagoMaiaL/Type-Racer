@@ -1,6 +1,6 @@
 'use strict';
 
-const { TypeRacerController, TypingDisplayer, View, TypingTextArea, TypingTextDisplay } = require('../src/typeracer-controller');
+const { TypeRacerController, TypingDisplayer, View, Button, TypingTextArea, TypingTextDisplay } = require('../src/typeracer-controller');
 const { TypeRacer } = require('../src/typeracer');
 
 describe('TypeRacerController', () => {
@@ -34,6 +34,10 @@ describe('TypeRacerController', () => {
         expect(this.controller.textArea.onType).toBeInstanceOf(Function);
     });
 
+    test('it creates a view for the new race html button', () => {
+        expect(this.controller.newRaceButton).toBeInstanceOf(Button);
+    });
+
     test('it has a method to configure a new race', () => {
         this.controller.setupRace(this.typeRacer);
 
@@ -50,7 +54,7 @@ describe('TypeRacerController', () => {
     test('setting a new race changes the typingDisplayer to display the typed words of the new game object', () => {
         const typeRacer = new TypeRacer('testing.');
         this.controller.setupRace(typeRacer);
-        
+
         expect(this.controller.typingDisplayer.typeRacer).toBe(typeRacer);
     });
 
@@ -67,12 +71,25 @@ describe('TypeRacerController', () => {
         expect(this.typeRacer.isRunning).toBe(true);
     });
 
+    test('it hides the new race button when it starts the game', () => {
+        this.controller.setupRace(this.typeRacer);
+        this.controller.startGame();
+
+        expect(this.controller.newRaceButton.isHidden).toBe(true);
+    });
+
     test('it sets and matches the typed text in the game', () => {
         this.controller.setupRace(new TypeRacer('text'));
         this.controller.startGame();
         this.controller.handleTypedChars('tes');
 
         expect(this.controller.textDisplay.currentText).toBe(this.controller.typingDisplayer.getHtmlText());
+    });
+
+    test('it shows the new race button when the game is over', () => {
+        this.controller.handleGameOver();
+
+        expect(this.controller.newRaceButton.isHidden).toBe(false);
     });
 });
 
@@ -190,6 +207,22 @@ describe('View', () => {
     test('calling a method that doesn\'t exist on its element should not throw an error in the tests', () => {
         const view = new View('.test', new Function());
         expect(view.element.any).toBeInstanceOf(Function);
+    });
+});
+
+describe('Button', () => {
+    test('it has a method to hide the element', () => {
+        const button = new Button();
+        button.hide();
+
+        expect(button.isHidden).toBe(true);
+    });
+
+    test('it has a method to show the element', () => {
+        const button = new Button();
+        button.show();
+
+        expect(button.isHidden).toBe(false);
     });
 });
 
